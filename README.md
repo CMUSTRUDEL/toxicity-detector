@@ -35,7 +35,8 @@ and the ratio between non-toxic and toxic to be 2.
 Alternatively, convert the train_issues.csv and train_comments.csv into MongoDB collections called naveen_issues and naveen_labeled_stanford_comments respectively. 
 Then run the test_on function from get_results with your specified issue_collection, comment_collection, and output_file name. 
 
-```import get_results 
+```
+import get_results 
 get_results.test_on("new_issues","new_comments","output_file")
 ```
 All the issues from the issue_collection will be classified by the classifier, and stored in the output_file.  
@@ -45,7 +46,8 @@ To reproduce the plots, first reclassify the data using get_results.py, and then
 For example, to reproduce the bar graph of language toxicity, run the classify_language function. 
 This will store the results for each language in their own txt file. Next, run the plot_languages function, which will store the plots in plots/langs.png.  
 For example, to reproduce the bar graph of language toxicity, run the classify_language function. This will store the results for each language in their own txt file. Next, run the plot_languages function, which will store the plots in plots/langs.png.  
-```import get_results 
+```
+import get_results 
 import plot 
 get_results.classify_language()
 plot.plot_languages()
@@ -53,7 +55,8 @@ plot.plot_languages()
 
 # Getting Perspective Score 
 To get the perspective score for a text, fill in the API key in perspective.py, and run the get_perspective_score function. 
-```import perspective
+```
+import perspective
 perspective.API_KEY = ""
 perspective.get_perspective_score("Sentence")
 ```
