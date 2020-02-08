@@ -21,7 +21,8 @@ We have a pretrained SVM model available in the src folder.
 The model is based off the sklearn SVM classifier object, and has two features, perspective_score and stanford_polite (both of which are numbers between 0-1). 
 To filter words by software specific words, train a model from scratch as described below. 
 To load the pretrained model, use 
-```import pickle
+```
+import pickle
 a = pickle.load(open("pretrained_model.p","rb"))
 # Perspective Score, Stanford Polite 
 a.predict([[0.1,0.2]])
