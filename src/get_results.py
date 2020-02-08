@@ -135,11 +135,7 @@ def classify_language():
     for lang in ["Haskell","Python","Java","Javascript"]:
         s = Suite()
         s.set_train_set(get_labeled_collection())
-<<<<<<< HEAD
         s.set_test_set({'issues':db["{}_issues".format(lang.lower())],'comments':db["{}_comments".format(lang.lower())]})
-=======
-#        s.set_test_set({'issues':db["{}_issues".format(lang.lower())],'comments':db["{}_comments".format(lang.lower())]})
->>>>>>> d83676441e3ec66c5f2686e1a432547f8254a5fc
         combo = ["perspective_score", "stanford_polite"]
 
         s.features = combo
@@ -150,14 +146,6 @@ def classify_language():
 
         s.set_model(svm_model)
 
-<<<<<<< HEAD
-=======
-        import pickle
-        pickle.dump(s,open("pretrained_model.p","wb"))
-
-        return 0
-
->>>>>>> d83676441e3ec66c5f2686e1a432547f8254a5fc
         with open('{}_results.txt'.format(lang.lower()), 'w') as f:
             with redirect_stdout(f):
                 s.test_issue_classifications_from_comments_all()
@@ -203,8 +191,4 @@ def classify_dates():
                 s.test_issue_classifications_from_comments_all()
 
 
-<<<<<<< HEAD
-=======
-# Test wheter removing features has any effect
->>>>>>> d83676441e3ec66c5f2686e1a432547f8254a5fc
 classify_language()
