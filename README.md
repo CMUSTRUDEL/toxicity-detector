@@ -25,7 +25,8 @@ To load the pretrained model, use
 a = pickle.load(open("pretrained_model.p","rb"))
 # Perspective Score, Stanford Polite 
 a.predict([[0.1,0.2]])
-a.predict([[1,1]])```
+a.predict([[1,1]])
+```
 
 # Training the model 
 To train your own model, use the training files in the training folder in data. 
@@ -35,7 +36,8 @@ Alternatively, convert the train_issues.csv and train_comments.csv into MongoDB 
 Then run the test_on function from get_results with your specified issue_collection, comment_collection, and output_file name. 
 
 ```import get_results 
-get_results.test_on("new_issues","new_comments","output_file")```
+get_results.test_on("new_issues","new_comments","output_file")
+```
 All the issues from the issue_collection will be classified by the classifier, and stored in the output_file.  
 
 # Plotting data
@@ -53,5 +55,6 @@ plot.plot_languages()
 To get the perspective score for a text, fill in the API key in perspective.py, and run the get_perspective_score function. 
 ```import perspective
 perspective.API_KEY = ""
-perspective.get_perspective_score("Sentence")```
+perspective.get_perspective_score("Sentence")
+```
  
