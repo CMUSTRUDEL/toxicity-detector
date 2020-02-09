@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import pandas as pd
 import random
 from copy import deepcopy
-import mysql.connector
+#import mysql.connector
 
 def connect_to_database():
     global db
@@ -28,7 +28,10 @@ def find_language(repo):
     for x in cursor:
         return x[0]
 
-connect_to_database()
+try:
+    connect_to_database()
+except:
+    print("Couldn't connect to Mongo")
 #connect_to_mysql()
 
 def get_labeled_collection():

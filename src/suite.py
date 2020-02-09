@@ -96,6 +96,42 @@ def rescore(new_sentence,features,tf_idf_counter):
 
     return new_features
 
+def remove_software_engineering_words(text,model):
+    features = ["perspective_score","stanford_polite"]
+
+    counter = pickle.load(open("pickles/github_words.p","rb"))
+    our_words = dict([(i,word_frequency(i,"en")*10**9) for i in counter])
+    different_words = log_odds(defaultdict(int,counter),defaultdict(int,our_words))
+
+    t = time.time()
+    words = text.split(" ")
+    words = [a.strip(',.!?:; ') for a in words]
+
+    words = list(set(words))
+    words = [word for word in words if not word.isalpha() or word.lower() in different_words]
+
+    for word in set(words):
+        # Maybe unkify?
+        new_sentence = re.sub(r'[^a-zA-Z0-9]' + re.escape(word.lower()) + r'[^a-zA-Z0-9]', ' potato ', text.lower())
+        new_features = rescore(new_sentence,features,0)
+
+        if model.predict([new_features])[0] == 0:
+            return 1
+
+    tokenizer = RegexpTokenizer(r'\w+')
+    all_words = tokenizer.tokenize(text)
+    # Try removing all unknown words
+    for word in set(all_words):
+        if word.lower() not in counter and word_frequency(word.lower(), "en") == 0 and len(word) > 2:
+            text = text.replace(word, '')
+
+    if model.predict([new_features])[0] == 0:
+        return 1
+
+    return 0
+
+
+
 def remove_SE_comment(text,model,features,tf_idf_counter):
     t = time.time()
     words = text.split(" ")

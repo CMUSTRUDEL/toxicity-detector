@@ -7,14 +7,34 @@ by Naveen Raman, Michelle Cao, Christian Kästner, Yulia Tsvetkov, and Bogdan Va
 # Data 
 We have all the training data available from the paper in the data folder. 
 All training data is in the data/training folder, and is in a .csv format. 
-To train, use the train_comments file, which contains information about comments in addition to a label (toxicity) as y or n. 
-To test the model, test against the data in labeled_test_comments.csv (the label is the column "toxicity"). 
+To train, use the train_comments file, which contains information about comments in addition to a label (toxic) as y or n. 
+To test the model, test against the data in labeled_test_issues.csv (the label is the column "toxic"). 
 To further test the model, we have a collection of 75K unlabeled issues randomly selected from Gtihub.
 Because of file limitations, we only have the link to the repository. 
 Run the classifier over the issues, and manually verify some of the issues predicted as toxic. 
 
 We additionally have the data used to generate the plots relating to language, corporate status, and date based toxicity. 
 These are all in csv format, and contain a list of links to Github issues. 
+
+Sample json entry for Mongo 
+```
+{'_id':'Apktool/iBotPeaches/1707/287520345',
+'polarity':-0.10625,
+'perspective_score':0.08018797,
+'owner':iBotPeaches,
+'repo':'Apktool',
+'num_reference':0,
+'text':'I am using apktool v 2.3.1. on Kali Linux. I get this error. Yesterday I have tried and it worked, today I get this error with any APK, tried at least 10. "" Using APK template Whatsappo.apk No platform was selected, choosing MsfModulePlatformAndroid from the payload No Arch selected, selecting Arch dalvik from the payload [] Creating signing key and keystore.. [] Decompiling original APK.. [] Decompiling payload APK.. [] Locating hook point.. [] Adding payload as package com.whatsapp.zumvr [] Loading /tmp/d20180110-6408-1ej4cd4/original/smali/com/whatsapp/AppShell.smali and injecting payload.. [] Poisoning the manifest with meterpreter permissions.. [] Adding &lt;uses-permission androidname=""android.permission.READ_CALL_LOG""/&gt; [] Adding &lt;uses-permission androidname=""android.permission.SET_WALLPAPER""/&gt; [] Adding &lt;uses-permission androidname=""android.permission.READ_SMS""/&gt; [] Adding &lt;uses-permission androidname=""android.permission.CALL_PHONE""/&gt; [] Adding &lt;uses-permission androidname=""android.permission.WRITE_CALL_LOG""/&gt; [*] Rebuilding Whatsappo.apk with meterpreter injection as /tmp/d20180110-6408-1ej4cd4/output.apk Error Unable to rebuild apk with apktool "" "',
+'num_url':0,
+'stanford_polite':0.4867653863696374,
+'subjectivity':0.6625,
+'num_emoji':2,
+'num_mention':0,
+'nltk_score':'-0.9127,
+'toxicity':0}
+```
+
+Though our model only uses the text, stanford_polite, and perspective_score, one could build a model using the various other features. 
 
 # Pretrained Model 
 We have a pretrained SVM model available in the src folder. 
