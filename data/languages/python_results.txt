@@ -1,0 +1,2 @@
+Dumped model
+['perspective_score', 'stanford_polite']

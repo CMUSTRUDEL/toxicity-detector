@@ -15,6 +15,7 @@ Run the classifier over the issues, and manually verify some of the issues predi
 
 We additionally have the data used to generate the plots relating to language, corporate status, and date based toxicity. 
 These are all in csv format, and contain a list of links to Github issues. 
+Finally, we have the results from our classifier predictions. Each issue is labeled with either a 0 (for non-toxic) or a 1 (for toxic). 
 
 Sample json entry for Mongo 
 ```
