@@ -5,7 +5,7 @@ matplotlib==3.0.3
 mysql==0.0.2
 mysql-connector==2.2.9
 mysqlclient==1.4.2.post1
-nltk==3.4.1
+nltk==3.4.5
 numpy==1.14.6
 pandas==0.24.2
 pandas-summary==0.0.6
