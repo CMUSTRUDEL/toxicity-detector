@@ -96,8 +96,11 @@ def rescore(new_sentence,features,tf_idf_counter):
 
     return new_features
 
-def remove_software_engineering_words(text,model):
+def get_prediction(text,model):
     features = ["perspective_score","stanford_polite"]
+
+    if model.predict([rescore(text,features,0)])[0] == 0:
+        return 0
 
     counter = pickle.load(open("pickles/github_words.p","rb"))
     our_words = dict([(i,word_frequency(i,"en")*10**9) for i in counter])
@@ -116,7 +119,7 @@ def remove_software_engineering_words(text,model):
         new_features = rescore(new_sentence,features,0)
 
         if model.predict([new_features])[0] == 0:
-            return 1
+            return 0
 
     tokenizer = RegexpTokenizer(r'\w+')
     all_words = tokenizer.tokenize(text)
@@ -125,10 +128,11 @@ def remove_software_engineering_words(text,model):
         if word.lower() not in counter and word_frequency(word.lower(), "en") == 0 and len(word) > 2:
             text = text.replace(word, '')
 
+    new_features = rescore(text,features,0)
     if model.predict([new_features])[0] == 0:
-        return 1
+        return 0
 
-    return 0
+    return 1
 
 
 
