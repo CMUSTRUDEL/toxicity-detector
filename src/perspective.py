@@ -1,15 +1,22 @@
 import time
 
-API_KEY = "APIKEY"
+import config
+
+API_KEY = config.perspective_api_key
+# 
 '''
 code from the perspective wrapper: https://github.com/Conway/perspective
 '''
 
+import time
 import json
 import requests
 import warnings
 import markdown
-from get_data import *
+import logging
+from retrying import retry
+
+#from get_data import *
 try:
     from html.parser import HTMLParser
 except ImportError:
@@ -128,10 +135,13 @@ class Perspective(object):
             payload_data["doNotStore"] = do_not_store
         payload = json.dumps(payload_data)
         headers = {'content-type': "application/json"}
+        # t=time.time()
         response = requests.post(url,
                             data=payload,
                             headers=headers,
-                            params=querystring)
+                            params=querystring,
+                            timeout=10)
+        # print("persp time", time.time()-t)
         data = response.json()
         if "error" in data.keys():
             raise PerspectiveAPIException(data["error"]["message"])
@@ -149,6 +159,7 @@ class Perspective(object):
                 s = Span(beginning, end, score, score_type, c)
                 a.spans.append(s)
             c.attributes.append(a)
+        # print("perspective call: ",text,base)
         return c
 
 class Comment(object):
@@ -223,8 +234,10 @@ def remove_non_english(text):
 
     return " ".join(text)
 
+#retry, up to 1h delay, never give up waiting
+@retry(wait_exponential_multiplier=10000, wait_exponential_max=3600000)
 def get_perspective_score(text):
-    time.sleep(0.02)
+    # time.sleep(0.02)
 
     if len(text.strip()) == 0:
         return 0
@@ -235,5 +248,5 @@ def get_perspective_score(text):
         return score
     except Exception as e:
         print(e)
-        return 0
+        raise e
 

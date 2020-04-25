@@ -1,4 +1,6 @@
-from get_data import *
+#from get_data import *
+import logging
+
 from text_modifier import *
 from util import *
 import itertools
@@ -34,6 +36,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import sys
 sys.path.insert(0, "politeness3")
 import politeness3.model
+logging.info("import done")
 
 model = 0
 
@@ -96,17 +99,26 @@ def rescore(new_sentence,features,tf_idf_counter):
 
     return new_features
 
-def get_prediction(text,model):
+counter = pickle.load(open("pickles/github_words.p","rb"))
+our_words = dict([(i,word_frequency(i,"en")*10**9) for i in counter])
+different_words = log_odds(defaultdict(int,counter),defaultdict(int,our_words))
+# logging.info("different_words"+str(different_words))
+
+# returns [isToxic, perspective_score, stanford_polite_score]
+def score_toxicity(text, model): 
+    logging.info("get_prediction "+text)
     features = ["perspective_score","stanford_polite"]
 
-    if model.predict([rescore(text,features,0)])[0] == 0:
-        return 0
+    val = rescore(text,features,0)
+    predict = model.predict([val])[0]
+    logging.info("predicted "+str(predict)+" from "+str(val))
 
-    counter = pickle.load(open("pickles/github_words.p","rb"))
-    our_words = dict([(i,word_frequency(i,"en")*10**9) for i in counter])
-    different_words = log_odds(defaultdict(int,counter),defaultdict(int,our_words))
+    return [predict, val[0], val[1]]
 
-    t = time.time()
+# postprocessing (usually only done for toxic comments)
+# returns list of clean text variants
+def clean_text(text):
+    result = []
     words = text.split(" ")
     words = [a.strip(',.!?:; ') for a in words]
 
@@ -115,21 +127,63 @@ def get_prediction(text,model):
 
     for word in set(words):
         # Maybe unkify?
-        new_sentence = re.sub(r'[^a-zA-Z0-9]' + re.escape(word.lower()) + r'[^a-zA-Z0-9]', ' potato ', text.lower())
-        new_features = rescore(new_sentence,features,0)
-
-        if model.predict([new_features])[0] == 0:
-            return 0
+        result += [re.sub(r'[^a-zA-Z0-9]' + re.escape(word.lower()) + r'[^a-zA-Z0-9]', ' potato ', " "+text.lower()+" ").strip()]
 
     tokenizer = RegexpTokenizer(r'\w+')
     all_words = tokenizer.tokenize(text)
+    # logging.info("all_words "+str(all_words))
     # Try removing all unknown words
     for word in set(all_words):
         if word.lower() not in counter and word_frequency(word.lower(), "en") == 0 and len(word) > 2:
             text = text.replace(word, '')
 
+    result += [text]
+    return result
+
+def get_prediction(text,model):
+    logging.info("get_prediction "+text)
+    features = ["perspective_score","stanford_polite"]
+
+    val = rescore(text,features,0)
+    predict = model.predict([val])[0]
+    logging.info("predicted "+str(predict)+" from "+str(val))
+
+    if predict == 0:
+        return 0
+
+
+    t = time.time()
+    words = text.split(" ")
+    words = [a.strip(',.!?:; ') for a in words]
+
+    words = list(set(words))
+    words = [word for word in words if not word.isalpha() or word.lower() in different_words]
+
+    logging.info("words "+str(words))
+
+    for word in set(words):
+        # Maybe unkify?
+        new_sentence = re.sub(r'[^a-zA-Z0-9]' + re.escape(word.lower()) + r'[^a-zA-Z0-9]', ' potato ', text.lower())
+        new_features = rescore(new_sentence,features,0)
+        prediction = model.predict([new_features])[0]
+        logging.info("try with potato replacement for "+word+": "+new_sentence+" = "+str(prediction))
+        
+        if prediction == 0:
+            return 0
+
+    tokenizer = RegexpTokenizer(r'\w+')
+    all_words = tokenizer.tokenize(text)
+    # logging.info("all_words "+str(all_words))
+    # Try removing all unknown words
+    for word in set(all_words):
+        if word.lower() not in counter and word_frequency(word.lower(), "en") == 0 and len(word) > 2:
+            text = text.replace(word, '')
+
+
     new_features = rescore(text,features,0)
-    if model.predict([new_features])[0] == 0:
+    prediction = model.predict([new_features])[0]
+    logging.info(text +" = "+str(prediction))
+    if prediction == 0:
         return 0
 
     return 1
