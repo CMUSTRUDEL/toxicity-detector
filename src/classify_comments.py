@@ -59,9 +59,9 @@ def get_text(table, id): # [text, time]
 	i = db[table].find_one({"_id": id}, {"title":1, "body":1})
 	text = ""
 	if "title" in i:
-		text += i["title"] + ": "
+		text += str(i["title"]) + ": "
 	if "body" in i:
-		text += i["body"] 
+		text += str(i["body"])
 	# print(text)
 	return [text, time.time() - start]
 
