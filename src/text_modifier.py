@@ -1,3 +1,4 @@
+import logging
 from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 from nltk.stem import PorterStemmer
 import pandas as pd
@@ -6,7 +7,7 @@ import numpy as np
 import nltk
 import re
 import nltk
-from get_data import *
+#from get_data import *
 from lexicon import *
 import time
 
