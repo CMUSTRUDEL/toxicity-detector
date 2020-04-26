@@ -83,3 +83,10 @@ perspective.API_KEY = ""
 perspective.get_perspective_score("Sentence")
 ```
  
+# To test toxicity on your own data
+To get the toxicity score for your own data, first setup the config file with the Perspective API key
+Then run 
+```
+import predict_text
+predict_text.predict_text("Your text here")
+```

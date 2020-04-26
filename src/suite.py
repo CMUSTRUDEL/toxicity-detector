@@ -24,7 +24,6 @@ from sklearn.svm import LinearSVC
 from perspective import get_perspective_score
 from copy import copy, deepcopy
 from sklearn.model_selection import KFold
-from gensim.models.keyedvectors import KeyedVectors
 from nltk.tokenize import RegexpTokenizer
 import warnings
 from collections import defaultdict

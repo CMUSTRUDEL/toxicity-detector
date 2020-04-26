@@ -2,7 +2,6 @@ import pandas as pd
 from text_modifier import *
 from get_data import *
 from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import SMOTE, ADASYN
 from collections import defaultdict
 import math
 
@@ -54,24 +53,6 @@ def select_ratio(df,ratio):
     non_toxic = df[df["toxic"] == 0]
     non_toxic = non_toxic.sample(min(len(non_toxic),int(ratio*len(all_toxic))))
     return pd.concat([all_toxic,non_toxic])
-
-def select_ratio_SMOTE(df,ratio,features=["stanford_polite","perspective_score"]):
-    sm = SMOTE(sampling_strategy={0: int(len(df)), 1: int(len(df) // ratio)})
-    labels = list(df["toxic"])
-    df, new_labels = sm.fit_resample(df[features], labels)
-    df = pd.DataFrame(df, columns=features)
-    df['toxic'] = new_labels
-
-    return df
-
-def select_ratio_ADASYN(df,ratio,features=["stanford_polite","perspective_score"]):
-    sm = ADASYN(sampling_strategy={0: int(len(df)), 1: int(len(df) // ratio)})
-    labels = list(df["toxic"])
-    df, new_labels = sm.fit_resample(df[features], labels)
-    df = pd.DataFrame(df, columns=features)
-    df['toxic'] = new_labels
-
-    return df
 
 def find_surrounding_comments(df,comment_id,window=1):
     """ Find the surrounding comments
