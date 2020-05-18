@@ -3,6 +3,8 @@ import config
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import textblob
+import perspective
+import TextParser
 
 import sys
 sys.path.insert(0, "politeness3")
@@ -27,14 +29,18 @@ def insert_data(collection_name,data_dictionary):
 
 def clean(text):
 	text = text.replace("\r","")
+	text = TextParser.remove_code(text)
+	text = TextParser.remove_inline_code(text)
+	text = TextParser.remove_newline(text)
+	text = TextParser.replace_mention(text)
+	text = TextParser.sub_PlusOne(text)
+	text = TextParser.remove_comments(text)
 	return text
 
 def insert_issue(issue,collection_name,ghtorrent_collection,label=''):
 	# Issue must be in form user/repo/issue
 	user,repo,issue_number = issue.split("/")
 	fields_to_take = ["title","repo","owner","number"]
-
-	all_dicts = []
 
 	results = db[ghtorrent_collection].find({'repo':repo,'owner':user,'number':int(issue_number)})
 	for result in results:
@@ -47,8 +53,8 @@ def insert_issue(issue,collection_name,ghtorrent_collection,label=''):
 		if label:
 			d['toxic'] = label
 
-		all_dicts.append(d)
-
+		print("Inserting {}".format(d))
+		#insert_data(collection_name,d)
 
 def insert_all_comments(issue,collection_name,ghtorrent_collection,label=[]):
 	user,repo,issue_number = issue.split("/")
@@ -80,8 +86,10 @@ def insert_all_comments(issue,collection_name,ghtorrent_collection,label=[]):
 
 		tokenized = nltk.sent_tokenize(d['text'])
 		d['stanford_polite'] = politeness3.model.score({'sentences':tokenized,'text':d['text']})['polite']
+		d['perspective_score'] = perspective.get_perspective_score(d['text'])
 
-		all_dicts.append(d)
-	print(all_dicts)
+		print("Inserting {}".format(d))
+
+		#insert_data(collection_name,d)
 
 insert_all_comments("rstudio/shiny/1595","naveen_temp_comments","issue_comments")

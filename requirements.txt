@@ -1,3 +1,4 @@
+langdetect==1.0.8
 Markdown==3.1.1
 matplotlib==3.0.3
 multiprocess==0.70.8
