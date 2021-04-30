@@ -18,7 +18,7 @@ sklearn==0.18.1
 sklearn-pandas==1.8.0
 spacy==2.2.1
 textblob==0.15.3
-urllib3==1.25.3
+urllib3==1.25.8
 wordfreq==2.2.1
 https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.0/en_core_web_md-2.2.0.tar.gz#egg=en_core_web_md
 

@@ -15,6 +15,6 @@ sklearn==0.0
 sklearn-pandas==1.8.0
 spacy==2.1.4
 textblob==0.15.3
-urllib3==1.25.3
+urllib3==1.25.8
 wordfreq==2.2.1
 retrying==1.3.3
