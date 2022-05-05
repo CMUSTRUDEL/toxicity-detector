@@ -2,7 +2,6 @@ from pymongo import MongoClient
 import pandas as pd
 import random
 from copy import deepcopy
-#import mysql.connector
 
 def connect_to_database():
     global db
@@ -16,6 +15,7 @@ def connect_to_database():
     return db
 
 def connect_to_mysql():
+    import mysql
     global cursor
     global mydb
     mydb = mysql.connector.connect(user = "NAME", passwd = "PASSWORD",host = "HOST",database="DATABASE")
