@@ -56,7 +56,7 @@ def get_parses(sent):
         sys.stderr.write('  Sentence: {}\n'.format(sent[:50]))
         extype, exvalue, extrace = sys.exc_info()
         traceback.print_exception(extype, exvalue, extrace)
-        raw_parses.append({'deps': 'X', 'sent': 'X'})
+        # raw_parses.append({'deps': 'X', 'sent': 'X'})
 
     return parse
 
