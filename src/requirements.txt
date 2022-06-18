@@ -3,7 +3,7 @@ imbalanced-learn==0.5.0
 imblearn==0.0
 matplotlib==3.0.3
 nltk==3.4.5
-numpy==1.14.6
+numpy==1.21.0
 pandas==0.24.2
 pandas-summary==0.0.6
 pathos==0.2.4
