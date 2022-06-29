@@ -2,7 +2,7 @@ langdetect==1.0.8
 Markdown==3.1.1
 matplotlib==3.0.3
 multiprocess==0.70.8
-nltk==3.4.1
+nltk==3.6.6
 numpy==1.14.6
 pandas==0.24.2
 pandas-summary==0.0.6
