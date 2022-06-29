@@ -2,7 +2,7 @@ gensim==3.7.3
 imbalanced-learn==0.5.0
 imblearn==0.0
 matplotlib==3.0.3
-nltk==3.4.5
+nltk==3.6.6
 numpy==1.14.6
 pandas==0.24.2
 pandas-summary==0.0.6
