@@ -90,3 +90,8 @@ Then run
 import predict_text
 predict_text.predict_text("Your text here")
 ```
+
+# WSU-SEAL refactored implementation
+
+If you are interested retraining the model using a new dataset, please check WSU-SEAL directory.
+For any question regarding this refactored version please contact Amiangshu Bosu (abosu@wayne.edu)
